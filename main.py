@@ -2,7 +2,6 @@ from typing import Final
 import os
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
-print('test')
 
 TOKEN: Final = 'REMOVED'
 BOT_USERNAME: Final = '@auto_voice_bot'
