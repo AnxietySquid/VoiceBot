@@ -3,7 +3,7 @@ import os
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 
-TOKEN: Final = 'REMOVED'
+TOKEN: Final = os.getenv("BOT_TOKEN")  
 BOT_USERNAME: Final = '@auto_voice_bot'
 VOICE_MESSAGES_PATH: Final = "./voices"
 DEFAULT_USER_VOICE_DURATION: Final = 60
