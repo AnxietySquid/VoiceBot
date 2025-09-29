@@ -2,6 +2,7 @@ from typing import Final
 import os
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
+from dotenv import load_dotenv
 
 TOKEN: Final = os.getenv("BOT_TOKEN")  
 BOT_USERNAME: Final = '@auto_voice_bot'
