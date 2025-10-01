@@ -7,8 +7,8 @@ __pycache__/
 *.log
 .env
 
-/backend/voices/
-/backend/voiced_messages/
+backend/voices/
+backend/voiced_messages/
 .python-version
 
 example.mp3
