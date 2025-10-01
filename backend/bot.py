@@ -4,6 +4,10 @@ from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 from dotenv import load_dotenv
 
+from tts_utils import text_to_speech
+
+load_dotenv()
+
 TOKEN: Final = os.getenv("BOT_TOKEN")  
 BOT_USERNAME: Final = '@auto_voice_bot'
 VOICE_MESSAGES_PATH: Final = "./voices"
