@@ -20,8 +20,6 @@ TOKEN: Final = os.getenv("BOT_TOKEN")
 BOT_USERNAME: Final = '@auto_voice_bot'
 VOICE_MESSAGES_PATH: Final = "./voices"
 DEFAULT_USER_VOICE_DURATION: Final = 60
-# Tracks the state whether bot is waiting for text
-WAITING_FOR_TEXT = 1
 
 os.makedirs(VOICE_MESSAGES_PATH, exist_ok=True)
 
@@ -59,7 +57,7 @@ def handle_response(text: str) -> tuple[str, str]:
         return ('text', 'fine')
 
     if 'music' in processed:
-        return ('voice', 'output.mp3')
+        return ('voice', 'example.mp3')
 
     return ('text', 'I do not understand you')
 
