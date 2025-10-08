@@ -9,6 +9,5 @@ __pycache__/
 
 backend/voices/
 backend/voiced_messages/
-.python-version
 
 example.mp3
