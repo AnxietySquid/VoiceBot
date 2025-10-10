@@ -1,3 +1,8 @@
+# remove comments
+# convert ogg to mp3
+# receive and send from bot
+
+
 from typing import Final
 import os
 from telegram import Update
@@ -9,6 +14,15 @@ from telegram.ext import (
     filters, 
     ContextTypes
 )
+from voice_clone import init_models
+from voice_clone import synthesize_to_file
+#ref_audio = "/home/anxiety/Documents/Python-projects/Voice-bot/voices/shortfilm-voice-56795.mp3"   
+#text = """
+#With our app you need to install audio editing software on your computer
+#You can cut an audio track in a couple of clicks right in your browser window
+#Just upload a file cut the section you want and save it to your hard drive"
+# """
+#out_path = synthesize_to_file(ref_audio, text, output_path="/home/anxiety/Documents/Python-projects/Voice-bot/voices/reply.wav")
 
 from dotenv import load_dotenv
 
@@ -18,8 +32,8 @@ load_dotenv()
 
 TOKEN: Final = os.getenv("BOT_TOKEN")  
 BOT_USERNAME: Final = '@auto_voice_bot'
-VOICE_MESSAGES_PATH: Final = "./voices"
-DEFAULT_USER_VOICE_DURATION: Final = 60
+VOICE_MESSAGES_PATH: Final = "/home/anxiety/Documents/Python-projects/Voice-bot/voices"
+DEFAULT_USER_VOICE_DURATION: Final = 600
 
 os.makedirs(VOICE_MESSAGES_PATH, exist_ok=True)
 
@@ -42,6 +56,12 @@ async def tts_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     print(f'Command "tts" has been invoked by user "{update.message.chat.username}"' )
     await update.message.reply_text("Send me the text and I will voice it over!")
     context.user_data["awaiting_tts"] = True
+
+async def clone_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    # Debug
+    print(f'Command "clone" has been invoked by user "{update.message.chat.username}"' )
+    await update.message.reply_text("Send me a voice message and a text right after so I can read it with your voice!")
+    context.user_data["awaiting_clone"] = True
 
 # Responses
 # Process the text that the user sents
@@ -78,8 +98,25 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         file_path = text_to_speech(text, f"{update.message.chat.id}_tts.mp3")
         with open(file_path, "rb") as voice_file:
             await update.message.reply_voice(voice=voice_file, caption="Here is your audio")
+            #Debug
             print(f'The voice message {update.message.chat.id}_tts.mp3 was sent to {update.message.chat.username}')
         return
+    
+    if context.user_data.get("awaiting_clone"):
+        context.user_data["awaiting_clone"] = False  # reset flag
+
+        await update.message.reply_text("Thanks, please wait a little, clearing my throat...")
+
+        # Grab the voice msg and synthesize
+        ref_audio = f"/home/anxiety/Documents/Python-projects/Voice-bot/voices/voice_{update.message.chat.id}.ogg"
+        file_path = synthesize_to_file(ref_audio, text, output_path=f"/home/anxiety/Documents/Python-projects/Voice-bot/voices/reply_{update.message.chat.id}.wav")
+
+        with open(file_path, "rb") as voice_file:
+            await update.message.reply_voice(voice=voice_file, caption="Here is your audio")
+            #Debug
+            print(f'\nThe voice message {update.message.chat.id}_tts.wav was sent to {update.message.chat.username}')
+        return
+
 
     if message_type == 'group':
         if BOT_USERNAME in text:
@@ -111,10 +148,13 @@ async def handle_voice(update: Update, context: ContextTypes.DEFAULT_TYPE):
     file = await context.bot.get_file(file_id)
     if int(duration) <= DEFAULT_USER_VOICE_DURATION:
         # Save file
-        file_path = f"voice_{update.message.chat.id}_{voice.file_unique_id}.ogg"
+        file_path = f"voice_{update.message.chat.id}.ogg"
         await file.download_to_drive(VOICE_MESSAGES_PATH + "/" + file_path)
         # Debug
         print(f"Saved voice message from {update.message.chat.username} as {file_path}")
+        if context.user_data.get("awaiting_clone"):
+            await update.message.reply_text("Now send me the text you want me to read")
+
     else:
         # Debug
         print(f"Voice message from {update.message.chat.username} will not be saved (id = {voice.file_unique_id}), too long: {duration}s > {DEFAULT_USER_VOICE_DURATION}s") 
@@ -127,6 +167,7 @@ async def error(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 if __name__ == '__main__':
+    
     # Debug
     print('Starting bot')
     
@@ -136,6 +177,7 @@ if __name__ == '__main__':
     app.add_handler(CommandHandler('start', start_command))
     app.add_handler(CommandHandler('help', help_command))
     app.add_handler(CommandHandler('tts', tts_command))
+    app.add_handler(CommandHandler('clone', clone_command))
 
 
     # Messages

@@ -813,12 +813,31 @@ resolution-markers = [
     "(platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or sys_platform == 'darwin'",
 ]
 dependencies = [
-    { name = "typing-extensions", marker = "(platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or sys_platform == 'darwin'" },
+    { name = "typing-extensions", marker = "(platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'extra-9-voice-bot-cpu') or (platform_machine != 'aarch64' and extra == 'extra-9-voice-bot-cpu' and extra == 'extra-9-voice-bot-cuda') or (platform_python_implementation != 'CPython' and extra == 'extra-9-voice-bot-cpu' and extra == 'extra-9-voice-bot-cuda') or (sys_platform == 'darwin' and extra == 'extra-9-voice-bot-cpu') or (sys_platform != 'linux' and extra == 'extra-9-voice-bot-cpu' and extra == 'extra-9-voice-bot-cuda')" },
 ]
 wheels = [
     { url = "https://download.pytorch.org/whl/cpu/torch-1.10.2-cp39-cp39-manylinux2014_aarch64.whl", hash = "sha256:97b7b0c667e8b0dd1fc70137a36e0a4841ec10ef850bda60500ad066bef3e2de" },
     { url = "https://download.pytorch.org/whl/cpu/torch-1.10.2-cp39-none-macosx_10_9_x86_64.whl", hash = "sha256:5b68e9108bd7ebd99eee941686046c517cfaac5331f757bcf440fe02f2e3ced1" },
     { url = "https://download.pytorch.org/whl/cpu/torch-1.10.2-cp39-none-macosx_11_0_arm64.whl", hash = "sha256:b07ef01e36b716d0d65ca60c4db0ac9d094a0e797d9b55290da4dcda91463b6c" },
+]
+
+[[package]]
+name = "torch"
+version = "1.10.2"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "sys_platform != 'win32'",
+    "sys_platform == 'win32'",
+]
+dependencies = [
+    { name = "typing-extensions", marker = "(extra == 'extra-9-voice-bot-cpu' and extra == 'extra-9-voice-bot-cuda') or (extra != 'extra-9-voice-bot-cpu' and extra != 'extra-9-voice-bot-cuda')" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/0a/e9/085d1399f5cc1b203d2926b90e76e9678f74b5a078cd491e1c3caddb7abe/torch-1.10.2-cp39-cp39-manylinux1_x86_64.whl", hash = "sha256:fbaf18c1b3e0b31af194a9d853e3739464cf982d279df9d34dd18f1c2a471878", size = 881937953, upload-time = "2022-01-27T20:04:22.332Z" },
+    { url = "https://files.pythonhosted.org/packages/48/2e/23ee7f39b883dde0f1bc9dffa4a67e24fd61991926a01dadd5c8d288a604/torch-1.10.2-cp39-cp39-manylinux2014_aarch64.whl", hash = "sha256:97b7b0c667e8b0dd1fc70137a36e0a4841ec10ef850bda60500ad066bef3e2de", size = 53405089, upload-time = "2022-01-27T20:05:45.106Z" },
+    { url = "https://files.pythonhosted.org/packages/82/49/cb675c5b70a081f39a2b09d0b4d98a2b14f08d895b3439fe3c0c48163018/torch-1.10.2-cp39-cp39-win_amd64.whl", hash = "sha256:901b52787baeb2e9e1357ca7037da0028bc6ad743f530e0040ae96ef8e27156c", size = 226537989, upload-time = "2022-01-27T20:12:45.128Z" },
+    { url = "https://files.pythonhosted.org/packages/97/46/5843fa34474ccbe5141c818b155189d086915cd8cb93b4230bcc341c208c/torch-1.10.2-cp39-none-macosx_10_9_x86_64.whl", hash = "sha256:5b68e9108bd7ebd99eee941686046c517cfaac5331f757bcf440fe02f2e3ced1", size = 147154740, upload-time = "2022-01-27T20:14:38.128Z" },
+    { url = "https://files.pythonhosted.org/packages/7b/91/89bbe2316b93671b6bccec094df6bc66109cf6d21a364cd2f1becd11ba3c/torch-1.10.2-cp39-none-macosx_11_0_arm64.whl", hash = "sha256:b07ef01e36b716d0d65ca60c4db0ac9d094a0e797d9b55290da4dcda91463b6c", size = 44609718, upload-time = "2022-01-27T20:36:06.217Z" },
 ]
 
 [[package]]
@@ -830,7 +849,7 @@ resolution-markers = [
     "sys_platform == 'win32'",
 ]
 dependencies = [
-    { name = "typing-extensions", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux') or (platform_python_implementation != 'CPython' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')" },
+    { name = "typing-extensions", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'extra-9-voice-bot-cpu') or (platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'extra-9-voice-bot-cpu') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-9-voice-bot-cpu') or (sys_platform == 'darwin' and extra == 'extra-9-voice-bot-cpu' and extra == 'extra-9-voice-bot-cuda') or (sys_platform == 'linux' and extra == 'extra-9-voice-bot-cpu' and extra == 'extra-9-voice-bot-cuda')" },
 ]
 wheels = [
     { url = "https://download.pytorch.org/whl/cpu/torch-1.10.2%2Bcpu-cp39-cp39-linux_x86_64.whl", hash = "sha256:318d52242f07288bec58829d445452ee5767f34ba0cf32ec08c50febecc47e24" },
@@ -846,7 +865,7 @@ resolution-markers = [
     "sys_platform == 'win32'",
 ]
 dependencies = [
-    { name = "typing-extensions" },
+    { name = "typing-extensions", marker = "extra == 'extra-9-voice-bot-cuda'" },
 ]
 wheels = [
     { url = "https://download.pytorch.org/whl/cu113/torch-1.10.2%2Bcu113-cp39-cp39-linux_x86_64.whl", hash = "sha256:f1f985ce8591b20aa038756a83c348144ca10119952f4ae5703dbb7aae1b3ce2" },
@@ -981,6 +1000,10 @@ dependencies = [
     { name = "setuptools" },
     { name = "sounddevice" },
     { name = "soundfile" },
+    { name = "torch", version = "1.10.2", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'extra-9-voice-bot-cpu') or (platform_machine != 'aarch64' and extra == 'extra-9-voice-bot-cpu' and extra == 'extra-9-voice-bot-cuda') or (platform_python_implementation != 'CPython' and extra == 'extra-9-voice-bot-cpu' and extra == 'extra-9-voice-bot-cuda') or (sys_platform == 'darwin' and extra == 'extra-9-voice-bot-cpu') or (sys_platform != 'linux' and extra == 'extra-9-voice-bot-cpu' and extra == 'extra-9-voice-bot-cuda')" },
+    { name = "torch", version = "1.10.2", source = { registry = "https://pypi.org/simple" }, marker = "(extra == 'extra-9-voice-bot-cpu' and extra == 'extra-9-voice-bot-cuda') or (extra != 'extra-9-voice-bot-cpu' and extra != 'extra-9-voice-bot-cuda')" },
+    { name = "torch", version = "1.10.2+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'extra-9-voice-bot-cpu') or (platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'extra-9-voice-bot-cpu') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-9-voice-bot-cpu') or (sys_platform == 'darwin' and extra == 'extra-9-voice-bot-cpu' and extra == 'extra-9-voice-bot-cuda') or (sys_platform == 'linux' and extra == 'extra-9-voice-bot-cpu' and extra == 'extra-9-voice-bot-cuda')" },
+    { name = "torch", version = "1.10.2+cu113", source = { registry = "https://download.pytorch.org/whl/cu113" }, marker = "extra == 'extra-9-voice-bot-cuda'" },
     { name = "tqdm" },
     { name = "typing" },
     { name = "umap-learn" },
@@ -1027,6 +1050,7 @@ requires-dist = [
     { name = "setuptools", specifier = "<=80.8.0" },
     { name = "sounddevice", specifier = "==0.4.3" },
     { name = "soundfile", specifier = "==0.10.3.post1" },
+    { name = "torch", specifier = ">=1.10.2" },
     { name = "torch", marker = "extra == 'cpu'", specifier = "==1.10.*", index = "https://download.pytorch.org/whl/cpu", conflict = { package = "voice-bot", extra = "cpu" } },
     { name = "torch", marker = "extra == 'cuda'", specifier = "==1.10.*", index = "https://download.pytorch.org/whl/cu113", conflict = { package = "voice-bot", extra = "cuda" } },
     { name = "tqdm", specifier = "==4.62.3" },
