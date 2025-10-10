@@ -16,13 +16,6 @@ from telegram.ext import (
 )
 from voice_clone import init_models
 from voice_clone import synthesize_to_file
-#ref_audio = "/home/anxiety/Documents/Python-projects/Voice-bot/voices/shortfilm-voice-56795.mp3"   
-#text = """
-#With our app you need to install audio editing software on your computer
-#You can cut an audio track in a couple of clicks right in your browser window
-#Just upload a file cut the section you want and save it to your hard drive"
-# """
-#out_path = synthesize_to_file(ref_audio, text, output_path="/home/anxiety/Documents/Python-projects/Voice-bot/voices/reply.wav")
 
 from dotenv import load_dotenv
 
