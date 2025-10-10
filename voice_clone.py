@@ -1,7 +1,3 @@
-# voice_cloning/voice_clone.py
-# Minimal integration wrapper around the local RTVC packages (encoder/, synthesizer/, vocoder/)
-# - lazy loads models (call init_models once, at startup)
-# - provides generate_waveform(...) and synthesize_to_file(...)
 from pathlib import Path
 import os
 import time
@@ -31,11 +27,8 @@ def init_models(
         return
 
     if use_cpu:
-        # Must be set BEFORE importing modules that might import torch.
         os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
-    # --- lazy imports (done after possibly setting CUDA_VISIBLE_DEVICES) ---
-    # Use relative imports because this file lives in the same package as the RTVC modules.
     from encoder import inference as encoder  # type: ignore
     from encoder.params_model import model_embedding_size as speaker_embedding_size  # type: ignore
     from synthesizer.inference import Synthesizer  # type: ignore
@@ -44,7 +37,6 @@ def init_models(
 
     base = Path(__file__).parent
     saved_models_dir = base / "saved_models"
-    # ensure default models exist (will download defaults if they're missing)
     ensure_default_models(saved_models_dir)
 
     # defaults
@@ -73,28 +65,9 @@ def init_models(
         }
     )
 
-'''
-def synthesize_to_file(ref_audio: str, text: str, output_path: str = None, seed: int = None) -> str:
-    """
-    High-level convenience: generate and save a .wav file. Returns the output path.
-    If output_path is None, writes to ../voices/cloned_<timestamp>.wav (project-level voices folder).
-    """
-
-    if output_path is None:
-        # default to project-level voices folder (../voices)
-        out_dir = Path(__file__).parent.parent / "voices"
-        out_dir.mkdir(parents=True, exist_ok=True)
-        output_path = out_dir / f"cloned_{int(time.time())}.wav"
-    else:
-        output_path = Path(output_path)
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-
-    return str(output_path)
-    '''
-
-
 def synthesize_to_file(ref_audio: str, text: str, output_path: str = None, seed: int = None) -> str:
     init_models(use_cpu=True) 
+    #Debug
     print('Models are initiated!')
     if not _models["loaded"]:
         raise RuntimeError("Models not initialized. Call init_models() first.")
@@ -103,22 +76,17 @@ def synthesize_to_file(ref_audio: str, text: str, output_path: str = None, seed:
     synthesizer = _models["synthesizer"]
     vocoder = _models["vocoder"]
 
-    # 1️⃣ Preprocess reference audio and get speaker embedding
     preprocessed_wav = encoder.preprocess_wav(ref_audio)
     embed = encoder.embed_utterance(preprocessed_wav)
 
-    # 2️⃣ Generate spectrogram from text
     specs = synthesizer.synthesize_spectrograms([text], [embed])
     spec = specs[0]
 
-    # 3️⃣ Generate waveform from spectrogram
     generated_wav = vocoder.infer_waveform(spec)
 
-    # 4️⃣ Pad to avoid 1s truncation bug
     generated_wav = np.pad(generated_wav, (0, synthesizer.sample_rate), mode="constant")
-    generated_wav = encoder.preprocess_wav(generated_wav)  # trim silence
+    generated_wav = encoder.preprocess_wav(generated_wav)  
 
-    # 5️⃣ Save to disk
     if output_path is None:
         out_dir = Path(__file__).parent.parent / "voices"
         out_dir.mkdir(parents=True, exist_ok=True)

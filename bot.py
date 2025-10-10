@@ -1,7 +1,11 @@
-# remove comments
-# convert ogg to mp3
-# receive and send from bot
-
+# make it work for universal paths and OSes
+# make README
+# make clearer instructions to use the bot
+# double the instructions in Russian?
+# write logs
+# save voice messages for future use
+# make instruction to generate multiple voices over one voice message
+# edge cases / error handling with user
 
 from typing import Final
 import os
