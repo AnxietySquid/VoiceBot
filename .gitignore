@@ -10,5 +10,6 @@ __pycache__/
 saved_models/default*
 voiced_messages/
 voices/
+voices_history/
 
 example.mp3
