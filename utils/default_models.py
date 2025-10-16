@@ -7,9 +7,9 @@ from tqdm import tqdm
 
 
 default_models = {
-    "encoder": ("https://drive.google.com/uc?export=download&id=1q8mEGwCkFy23KZsinbuvdKAQLqNKbYf1", 17090379),
-    "synthesizer": ("https://drive.google.com/u/0/uc?id=1EqFMIbvxffxtjiVrtykroF6_mUh-5Z3s&export=download&confirm=t", 370554559),
-    "vocoder": ("https://drive.google.com/uc?export=download&id=1cf2NO6FtI0jDuy8AV3Xgn6leO6dHjIgu", 53845290),
+    "encoder": ("https://drive.google.com/uc?export=download&id=1Fahntl4uiuOLZzkgyUR8NhtMIKys6BNY", 17090379),
+    "synthesizer": ("https://drive.google.com/file/d/1TGN7QqixdYnov5o4SUT6yr5xH5xw73JY/view?usp=sharing", 370554559),
+    "vocoder": ("https://drive.google.com/file/d/19BSNQ7f5fSB-AxzPcZS5KbAUG61W79rj/view?usp=sharing", 53845290),
 }
 
 
